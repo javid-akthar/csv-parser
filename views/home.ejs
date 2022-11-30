@@ -1,0 +1,85 @@
+<style>
+    #files-container {
+        display: flex;
+        flex-direction: column;
+        padding-top:20px
+    }
+    .file-name-container, .file-actions-container {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+    align-content: center;
+}
+
+
+.file {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 492px;
+    margin: auto;
+    padding: 10px 0px;
+    background-color: lightblue;
+    padding: 20px;
+    border: 2px solid black;
+    border-radius: 6px;
+}
+form{
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+</style>
+
+<form action="/file/upload" method="post" enctype="multipart/form-data">
+    <input type="file" accept=".csv" name="uploaded_file" placeholder="Upload CSV File...">
+    <button type="submit" class="submit-button"><i class="fas fa-upload"></i></button>
+</form>
+
+<div id="files-container">
+    <% for(let i=0;i<file_list.length;i++){ %>
+        <div class="file">
+            <div class="file-name-container">
+                <div class="file-name"><i class="fas fa-file"></i>
+                    <%=file_list[i].substring(0,20) %>
+                </div>
+            </div>
+            <div class="file-actions-container">
+                <button onclick="myFunction()">Click me</button>
+                <button onclick="loadingbtn('<%= i %>')" id="file-open-button<%= i %>" type="button"
+                    class="btn btn-primary"></button>
+                <div id="file-loading<%= i %>" class="spinner-border" role="status" style="display:none;">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <span id="text-loading<%= i %>" style="display:none;">Loading...</span>
+                <a id="file-open<%= i %>" href="/file/open/?id=<%= i %>"></a>
+                <!-- <p id="demo"></p> -->
+                <!-- <div onclick="loadingbtn('file-open-button<%= i %>')" id="file-open-button<%= i %>"
+                class="file-open-button"><a href="/file/open/?id=<%= i %>">OPEN</a></div> -->
+                <div id="loadingiconfile-open-button<%= i %>"></div>
+                <a href="/file/delete/?index=<%= i %>"><i class="fas fa-trash"></i></a>
+            </div>
+
+
+        </div>
+        <% } %>
+
+            <!-- <p id="demo"></p> -->
+</div>
+
+<script>
+    //     function myFunction() {
+    //         document.getElementById("demo").innerHTML = `<div class="spinner-border" role="status">
+    //   <span class="sr-only">Loading...</span>
+    // </div>`;
+    // }
+    console.log('page loaded');
+    function loadingbtn(id) {
+        document.getElementById('file-loading' + id).style.display = 'block';
+        document.getElementById('text-loading' + id).style.display = 'block';
+        console.log($('#' + 'file-open' + id));
+        //    $('#'+'file-open'+id).trigger("click");
+        window.location = $('#' + 'file-open' + id).attr('href');
+    }
+
+</script>

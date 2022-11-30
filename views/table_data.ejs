@@ -1,0 +1,9 @@
+
+
+    <% for(jsonObj of jsonData){ %>  
+        <tr class="row-data">
+            <%   for (const property in jsonObj) { %>
+                <td><%= jsonObj[property] %></th>
+            <% } %>
+            </tr>
+    <% } %>     
