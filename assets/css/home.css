@@ -1,3 +1,58 @@
-i:hover{
+i:hover {
     transform: scale(1.5);
+}
+
+#files-container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px
+}
+
+.file-name-container,
+.file-actions-container {
+    display: flex;
+    justify-content: space-between;
+    /* width: 60%; */
+    align-content: center;
+}
+
+.file-name-container {
+    width: 65%
+}
+
+.file-actions-container {
+    width: 25%
+}
+
+
+.file {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 492px;
+    margin: auto;
+    padding: 10px 0px;
+    background-color: lightblue;
+    padding: 10px;
+    border: 2px solid black;
+    border-radius: 6px;
+}
+
+form {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#formFile{
+    width: 30%;
+}
+
+.upload-form-lable {
+    padding-top: 7px;
+    padding-right: 6px;
+}
+
+.upload-form {
+    padding-top: 11px;
 }
