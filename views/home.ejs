@@ -2,39 +2,72 @@
     #files-container {
         display: flex;
         flex-direction: column;
-        padding-top:20px
+        padding-top: 20px
     }
-    .file-name-container, .file-actions-container {
-    display: flex;
-    justify-content: space-between;
-    width: 60%;
-    align-content: center;
-}
+
+    .file-name-container,
+    .file-actions-container {
+        display: flex;
+        justify-content: space-between;
+        /* width: 60%; */
+        align-content: center;
+    }
+
+    .file-name-container {
+        width: 65%
+    }
+
+    .file-actions-container {
+        width: 25%
+    }
 
 
-.file {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 492px;
-    margin: auto;
-    padding: 10px 0px;
-    background-color: lightblue;
-    padding: 20px;
-    border: 2px solid black;
-    border-radius: 6px;
-}
-form{
-    margin: auto;
-    display: flex;
-    justify-content: center;
-}
+    .file {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 492px;
+        margin: auto;
+        padding: 10px 0px;
+        background-color: lightblue;
+        padding: 10px;
+        border: 2px solid black;
+        border-radius: 6px;
+    }
+
+    form {
+        margin: auto;
+        display: flex;
+        justify-content: center;
+    }
+
+    .form-control {
+        width: 30%;
+    }
+
+    .upload-form-lable{
+        padding-top: 7px;
+    padding-right: 6px;
+    }
+    .upload-form{
+        padding-top: 11px;
+    }
 </style>
 
-<form action="/file/upload" method="post" enctype="multipart/form-data">
-    <input type="file" accept=".csv" name="uploaded_file" placeholder="Upload CSV File...">
-    <button type="submit" class="submit-button"><i class="fas fa-upload"></i></button>
-</form>
+<div class="mb-3">
+    <form class="upload-form" action="/file/upload" method="post" enctype="multipart/form-data">
+            <label for="formFile" class="form-label upload-form-lable">Upload File</label>
+            <input id="formFile" class="form-control" type="file" accept=".csv" name="uploaded_file"
+                placeholder="Upload CSV File...">
+            <button type="submit" class="submit-button"><i class="fas fa-upload"></i></button>
+
+    </form>
+</div>
+
+<!-- <div class="mb-3">
+    <label for="formFile" class="form-label">Default file input example</label>
+    <input class="form-control" type="file" id="formFile">
+</div> -->
 
 <div id="files-container">
     <% for(let i=0;i<file_list.length;i++){ %>
@@ -45,9 +78,9 @@ form{
                 </div>
             </div>
             <div class="file-actions-container">
-                <button onclick="myFunction()">Click me</button>
+                <!-- <button onclick="myFunction()">Click me</button> -->
                 <button onclick="loadingbtn('<%= i %>')" id="file-open-button<%= i %>" type="button"
-                    class="btn btn-primary"></button>
+                    class="btn btn-primary">open File</button>
                 <div id="file-loading<%= i %>" class="spinner-border" role="status" style="display:none;">
                     <span class="sr-only">Loading...</span>
                 </div>
@@ -57,7 +90,7 @@ form{
                 <!-- <div onclick="loadingbtn('file-open-button<%= i %>')" id="file-open-button<%= i %>"
                 class="file-open-button"><a href="/file/open/?id=<%= i %>">OPEN</a></div> -->
                 <div id="loadingiconfile-open-button<%= i %>"></div>
-                <a href="/file/delete/?index=<%= i %>"><i class="fas fa-trash"></i></a>
+                <a href="/file/delete/?id=<%= i %>"><i style="padding-top: 10px;" class="fas fa-trash"></i></a>
             </div>
 
 

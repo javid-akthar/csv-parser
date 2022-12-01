@@ -1,9 +1,13 @@
 
-
-    <% for(jsonObj of jsonData){ %>  
+    <% let i=0 %>
+    <% while(i<jsonData.length){ %>  
+        <% if(searchResultArray[i]){ %>
+        <% jsonObj=jsonData[i] %>    
         <tr class="row-data">
             <%   for (const property in jsonObj) { %>
                 <td><%= jsonObj[property] %></th>
             <% } %>
-            </tr>
+        </tr>
+        <% } %>
+        <% i++ %>    
     <% } %>     
