@@ -1,12 +1,13 @@
 const express = require('express');
-const port = 8002;
+const port = 8007;
 const fs = require('fs');
 const path = require('path');
 const expressLayout = require('express-ejs-layouts')
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-
-
+const logger = require('morgan');
+const env = require('./config/environment');
+console.log('env',env);
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.set('layout extractScripts', true);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static('assets'));
 app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use(logger(env.morgan.mode, env.morgan.options));
 app.use('/', require('./routes/index'));
 
 app.listen(port, function (err) {

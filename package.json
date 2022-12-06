@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "SET NODE_ENV=development& nodemon index.js",
+    "prod_start": "SET NODE_ENV=production& nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -20,9 +21,11 @@
     "fs": "^0.0.1-security",
     "iconv-lite": "^0.6.3",
     "mongoose": "^6.7.4",
+    "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
     "nodemon": "^2.0.20",
     "papaparse": "^5.3.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "rotating-file-stream": "^3.0.4"
   }
 }
