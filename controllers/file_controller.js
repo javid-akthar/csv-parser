@@ -156,8 +156,13 @@ module.exports.searchArray = async function (req, res) {
             let count = 0;
             for (property in obj) {
                 count++;
-                if(obj[property]){
+                // if(obj[property]){
+                    result=false;
+                    try{
                     result = obj[property].toString().toLowerCase().includes(searchKey)
+                    }catch(err){
+                        // console.log(err);
+                    }
                 if (result) {
                     searchResultArray[i] = true
                     break;
@@ -166,7 +171,7 @@ module.exports.searchArray = async function (req, res) {
                         searchResultArray[i] = false
                     }
                 }
-                }
+                // }
                 
             }
         }
