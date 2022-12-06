@@ -156,7 +156,8 @@ module.exports.searchArray = async function (req, res) {
             let count = 0;
             for (property in obj) {
                 count++;
-                result = obj[property].toString().toLowerCase().includes(searchKey)
+                if(obj[property]){
+                    result = obj[property].toString().toLowerCase().includes(searchKey)
                 if (result) {
                     searchResultArray[i] = true
                     break;
@@ -165,6 +166,8 @@ module.exports.searchArray = async function (req, res) {
                         searchResultArray[i] = false
                     }
                 }
+                }
+                
             }
         }
         let html = await ejs.renderFile(__dirname + '../../views/table_data.ejs', {
