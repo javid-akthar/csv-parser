@@ -1,5 +1,5 @@
 const express = require('express');
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3003;
 const fs = require('fs');
 const path = require('path');
 const expressLayout = require('express-ejs-layouts')
@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const logger = require('morgan');
 const env = require('./config/environment');
-console.log('env',env);
+console.log('env', env);
 
 const app = express();
 

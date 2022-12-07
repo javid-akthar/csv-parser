@@ -8,15 +8,18 @@ th {
     top: 0;
     background-color: navajowhite;
 }
-i:hover{
-transform: scale(1.3);
-cursor: pointer
+
+i:hover {
+    transform: scale(1.3);
+    cursor: pointer
 }
-.tableSearchForm{
-width: 60%;
-margin:auto;
+
+.tableSearchForm {
+    width: 60%;
+    margin: auto;
 }
-.tableSearchBtn{
-margin-left: 3px;
+
+.tableSearchBtn {
+    margin-left: 3px;
 
 }

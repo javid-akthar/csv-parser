@@ -1,4 +1,3 @@
-// SET STORAGE
 const multer = require('multer');
 const ejs = require('ejs');
 const fs = require('fs');
@@ -9,10 +8,12 @@ const parsedSet = new Map();
 const descAscCache = new Map();
 const searchResultMap = new Map();
 
+// to store the files names
 module.exports.uploadedFileArray = function () {
     return uploadedFileArray;
 }
 
+// multer for processing uploaded files
 path = require('path')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -25,11 +26,12 @@ var storage = multer.diskStorage({
     }
 });
 
+// Filter for accepting only .csv format files
 var fileFilter = function (req, file, callback) {
     var ext = path.extname(file.originalname);
     if (ext !== '.csv') {
         console.log('the uploaded files is csv format')
-        return callback(new Error('Only csv format files are allowed'))
+        return callback(new Error('the uploaded file is not in csv format'))
     }
     callback(null, true)
 }
@@ -39,6 +41,7 @@ var upload = multer({
     fileFilter: fileFilter
 }).single('uploaded_file');
 
+// controller for uploading the files and storing in the uploads part
 module.exports.upload = function (req, res) {
     try {
         console.log("inside uploadController");
@@ -63,16 +66,16 @@ module.exports.upload = function (req, res) {
 }
 
 
-
+// controller for converting csv format file to json obj and convert it into table rows
 module.exports.open = function (req, res) {
 
     try {
         console.log("inside openController");
         const csvParsedData = [];
         const id = req.query.id;
-        console.log('id',id);
+        console.log('id', id);
         const pathOfFile = path.join(__dirname, '../uploads', uploadedFileArray[id]);
-        console.log('pathOfFile',pathOfFile);
+        console.log('pathOfFile', pathOfFile);
         const buffer = fs.readFileSync(pathOfFile);
 
         let dataString = iconv.decode(buffer, 'win1251');
@@ -102,6 +105,7 @@ module.exports.open = function (req, res) {
     }
 }
 
+// controller for sorting the data column wise with the column selected
 module.exports.sortArray = async function (req, res) {
     try {
         console.log("reached sortArray controller");
@@ -141,6 +145,7 @@ module.exports.sortArray = async function (req, res) {
 
 }
 
+// controller for searching with keyword in jsob obj and onl show the filtered result
 module.exports.searchArray = async function (req, res) {
     try {
         console.log("reached searchArray controller")
@@ -157,12 +162,11 @@ module.exports.searchArray = async function (req, res) {
             for (property in obj) {
                 count++;
                 // if(obj[property]){
-                    result=false;
-                    try{
+                result = false;
+                try {
                     result = obj[property].toString().toLowerCase().includes(searchKey)
-                    }catch(err){
-                        // console.log(err);
-                    }
+                } catch (err) {
+                }
                 if (result) {
                     searchResultArray[i] = true
                     break;
@@ -172,7 +176,7 @@ module.exports.searchArray = async function (req, res) {
                     }
                 }
                 // }
-                
+
             }
         }
         let html = await ejs.renderFile(__dirname + '../../views/table_data.ejs', {
@@ -193,6 +197,7 @@ module.exports.searchArray = async function (req, res) {
     }
 }
 
+// controller for deleting the files
 module.exports.delete = function (req, res) {
     try {
         let id = req.query.id;
