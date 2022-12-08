@@ -15,7 +15,7 @@ module.exports.uploadedFileArray = function () {
 }
 
 // multer for processing uploaded files
-path = require('path')
+// path = require('path')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../uploads'))
