@@ -181,13 +181,11 @@ module.exports.searchArray = async function (req, res) {
             }
         }
         // console.log(path(__dirname));
-        let ejsFilePath =  path.join(__dirname, '../../views/table_data.ejs');
+        let ejsFilePath =  path.join(__dirname, '../views/table_data.ejs');
+        let dirpath = path.join(__dirname);
         console.log('ejsFilePath',ejsFilePath);
-        // let html = await ejs.renderFile(__dirname + '../../views/table_data.ejs', {
-        //     jsonData: jsonData,
-        //     searchResultArray: searchResultArray
-        // });
-        let html = await ejs.renderFile(path.join(__dirname, '../../views/table_data.ejs'), {
+        console.log('dirpath',dirpath);
+        let html = await ejs.renderFile(path.join(__dirname, '../views/table_data.ejs'), {
             jsonData: jsonData,
             searchResultArray: searchResultArray
         });
