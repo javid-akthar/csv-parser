@@ -127,7 +127,7 @@ module.exports.sortArray = async function (req, res) {
         }
         parsedSet.set(id, jsonData);
         searchResultArray = searchResultMap.get(id);
-        let html = await ejs.renderFile(__dirname + '../../views/table_data.ejs', {
+        let html = await ejs.renderFile(path.join(__dirname, '../views/table_data.ejs'), {
             jsonData: jsonData,
             searchResultArray: searchResultArray
         });
