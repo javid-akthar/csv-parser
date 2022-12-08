@@ -1,5 +1,5 @@
 const express = require('express');
-const port = process.env.PORT || 3004;
+const port = process.env.PORT || 3002;
 const fs = require('fs');
 const path = require('path');
 const expressLayout = require('express-ejs-layouts')
