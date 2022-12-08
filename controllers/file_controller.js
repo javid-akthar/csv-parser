@@ -7,6 +7,7 @@ const uploadedFileArray = [];
 const parsedSet = new Map();
 const descAscCache = new Map();
 const searchResultMap = new Map();
+const path = require('path');
 
 // to store the files names
 module.exports.uploadedFileArray = function () {
