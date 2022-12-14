@@ -19,5 +19,4 @@ An application which reads the csv format file and display its data in tabular f
   - once the build completed git npm start
 
 # Deployement 
-Project already deployed on Heroku.
-Visit:https://csvupload0.herokuapp.com/
+project link: http://ec2-15-206-165-96.ap-south-1.compute.amazonaws.com:3002/

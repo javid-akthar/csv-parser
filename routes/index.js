@@ -1,10 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
+// importing homecontroller
 const homeController = require('../controllers/home_controller');
 
-router.get('/', homeController.home);    //route for homepage
+//route for homepage/ upload page
+router.get('/', homeController.home);    
 
-router.use('/file', require('./file'));  //route for all other routes related to files
+// route for all file related functionalities
+router.use('/file', require('./file'));  
 
 module.exports = router;

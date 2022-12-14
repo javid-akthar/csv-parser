@@ -2,10 +2,22 @@ const multer = require('multer');
 const ejs = require('ejs');
 const fs = require('fs');
 var iconv = require('iconv-lite');
+
+// papaparse library to parse the csv file and convert to json object array
 const Papa = require('papaparse');
+
+// the names of files will be stored in this array
 const uploadedFileArray = [];
+
+// if a csv filed is parsed it will be stored in this set to use this for sorting and search functionalities
 const parsedSet = new Map();
+
+// if a parsed array is sorted in ascending or descending order the subsequent asc/desc
+//  functionalities will be triggered in already sorted jspn module so the previous sort will be saved
 const descAscCache = new Map();
+
+// if a search function is triggered before sort function, the sort need to be performed in search result obj
+// so we are storing the search result in this map
 const searchResultMap = new Map();
 const path = require('path');
 
@@ -15,7 +27,6 @@ module.exports.uploadedFileArray = function () {
 }
 
 // multer for processing uploaded files
-// path = require('path')
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.join(__dirname, '../uploads'))
@@ -23,11 +34,12 @@ var storage = multer.diskStorage({
     filename: function (req, file, cb) {
         console.log("file.fieldname + '-' + Date.now()", file.fieldname + '-' + Date.now());
         console.log(file.originalname);
+        // modifying the file name and storing in uploads folder
         cb(null, file.originalname + '-' + Date.now())
     }
 });
 
-// Filter for accepting only .csv format files
+// to accept only .csv file, this will take care
 var fileFilter = function (req, file, callback) {
     var ext = path.extname(file.originalname);
     if (ext !== '.csv') {
@@ -37,6 +49,8 @@ var fileFilter = function (req, file, callback) {
     callback(null, true)
 }
 
+
+// multer object
 var upload = multer({
     storage: storage,
     fileFilter: fileFilter
@@ -55,6 +69,7 @@ module.exports.upload = function (req, res) {
             }
 
             console.log('req.file.filename', req.file.filename)
+            // the names of files will be stored in this array
             uploadedFileArray.push(req.file.filename);
             return res.redirect('/');
 
@@ -87,13 +102,16 @@ module.exports.open = function (req, res) {
 
 
         };
+        // using papaparse to parse the csv file to json object
         const parsedOutput = Papa.parse(dataString, config);
         jsonData = parsedOutput.data;
         jsonData.pop();
         let searchResultArray = new Array(jsonData.length).fill(true);
         searchResultMap.set(id, searchResultArray);
+        // storing the parsed data in set to use it for future sort and search functionality
         parsedSet.set(id, jsonData);
         descAscCache.set(id, {});
+        // rendering the table with parsed json object
         return res.render('tabular-data-view', {
             title: "csv parser",
             jsonData: jsonData,
@@ -114,6 +132,7 @@ module.exports.sortArray = async function (req, res) {
         id = req.body.id;
         jsonData = parsedSet.get(req.body.id);
         descAsc = descAscCache.get(id);
+        // logic to sort in asc/desc based upon the requirement
         if (!descAsc.hasOwnProperty(colName)) {
             descAsc[colName] = true;
         } else if (descAsc.hasOwnProperty(colName)) {
@@ -126,7 +145,11 @@ module.exports.sortArray = async function (req, res) {
             jsonData = jsonData.sort((a, b) => a[colName] < b[colName] ? 1 : -1)
         }
         parsedSet.set(id, jsonData);
+        // if a search function is triggered before sort function, the sort need to be performed in search result obj
+        // so we are storing the search result in this map
         searchResultArray = searchResultMap.get(id);
+        // will send the new json Obj to table_data.ejs and will update the DOM
+        // with new table
         let html = await ejs.renderFile(path.join(__dirname, '../views/table_data.ejs'), {
             jsonData: jsonData,
             searchResultArray: searchResultArray
@@ -153,13 +176,18 @@ module.exports.searchArray = async function (req, res) {
         searchKey = req.body.searchKey.toLowerCase()
         id = req.body.id
         console.log('searchKey', searchKey)
-        console.log('id', id)
+        console.log('id', id);
+
+        // if a csv filed is parsed it will be stored in this set to use this for sorting 
+        // and search functionalities and later we will use this for seraching
         jsonData = parsedSet.get(id);
         let searchResultArray = searchResultMap.get(id);
         for (let i = 0; i < jsonData.length; i++) {
             let obj = jsonData[i];
             let objSize = Object.keys(obj).length;
             let count = 0;
+            // for loop to traverse over each object and every field in a object and find the matching 
+            // obj based upon the input search key
             for (property in obj) {
                 count++;
                 // if(obj[property]){
@@ -185,6 +213,8 @@ module.exports.searchArray = async function (req, res) {
         let dirpath = path.join(__dirname);
         console.log('ejsFilePath',ejsFilePath);
         console.log('dirpath',dirpath);
+        // will send the new json Obj to table_data.ejs and will update the DOM
+        // with new table
         let html = await ejs.renderFile(path.join(__dirname, '../views/table_data.ejs'), {
             jsonData: jsonData,
             searchResultArray: searchResultArray
@@ -205,6 +235,7 @@ module.exports.searchArray = async function (req, res) {
 
 // controller for deleting the files
 module.exports.delete = function (req, res) {
+    // delete the selected file in the uploads folder
     try {
         let id = req.query.id;
         let files = fs.readdirSync(path.join(__dirname, '..', '/uploads'));
@@ -213,9 +244,13 @@ module.exports.delete = function (req, res) {
             if (fs.statSync(filePath).isFile())
                 fs.unlinkSync(filePath);
         }
+        // updating the uploadedFileArray after deletion
         uploadedFileArray.splice(id, 1);
+        // updating the parsedSet set after deletion
         parsedSet.delete(id)
+        // updating the descAscCache set after deletion
         descAscCache.delete(id)
+        // updating the searchResultMap set after deletion
         searchResultMap.delete(id)
         return res.redirect('back');
     } catch (err) {

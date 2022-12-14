@@ -11,17 +11,23 @@ console.log('env', env);
 
 const app = express();
 
+// setting the view engine as ejs
 app.set('view engine', 'ejs');
+// setting the views folder
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayout);
 app.set('layout extractStyles', true);
 app.set('layout extractScripts', true);
 app.use(bodyParser.urlencoded({ extended: false }));
+// setting the assets as express.static
 app.use(express.static('assets'));
 app.use('/uploads', express.static(__dirname + '/uploads'));
+
+// setting up the logger
 app.use(logger(env.morgan.mode, env.morgan.options));
 app.use('/', require('./routes/index'));
 
+// setting up the server
 app.listen(port, function (err) {
   if (err) {
     console.log("Error in running express server", err);
